@@ -1,6 +1,6 @@
 # Copyright 2018 Nordic Semiconductor ASA
 # Copyright 2017-2020 Linaro Limited
-# Copyright 2019-2021 Arm Limited
+# Copyright 2019-2023 Arm Limited
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -67,6 +67,7 @@ TLV_VALUES = {
         'ECDSA256': 0x22,
         'RSA3072': 0x23,
         'ED25519': 0x24,
+        'ECDSASIG': 0x25,
         'ENCRSA2048': 0x30,
         'ENCKW': 0x31,
         'ENCEC256': 0x32,
@@ -431,7 +432,6 @@ class Image():
         sha = hashlib.sha256()
         sha.update(self.payload)
         digest = sha.digest()
-
         tlv.add('SHA256', digest)
 
         if vector_to_sign == 'payload':
