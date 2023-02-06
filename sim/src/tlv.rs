@@ -1,6 +1,6 @@
 // Copyright (c) 2017-2021 Linaro LTD
 // Copyright (c) 2017-2020 JUUL Labs
-// Copyright (c) 2021 Arm Limited
+// Copyright (c) 2021-2023 Arm Limited
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -55,6 +55,7 @@ pub enum TlvKinds {
     ECDSA256 = 0x22,
     RSA3072 = 0x23,
     ED25519 = 0x24,
+    ECDSASIG = 0x25,
     ENCRSA2048 = 0x30,
     ENCKW = 0x31,
     ENCEC256 = 0x32,
@@ -160,6 +161,13 @@ impl TlvGen {
             kinds: vec![TlvKinds::SHA256, TlvKinds::ECDSA256],
             ..Default::default()
         }
+    }
+
+    #[allow(dead_code)]
+    pub fn new_generic_ecdsa() -> TlvGen {
+        TlvGen {
+            kinds: vec![TlvKinds::SHA256,TlvKinds::ECDSASIG],
+            ..Default::default()}
     }
 
     #[allow(dead_code)]
@@ -368,6 +376,10 @@ impl ManifestGen for TlvGen {
             estimate += 4 + 32; // keyhash
             estimate += 4 + 64; // ED25519 signature.
         }
+        if self.kinds.contains(&TlvKinds::ECDSASIG) {
+            estimate += 4 + 32; // keyhash
+            estimate += 4 + 72; // ECDSA256 (varies)
+        }
 
         // Estimate encryption.
         let flag = TlvFlags::ENCRYPTED_AES256 as u32;
@@ -452,7 +464,7 @@ impl ManifestGen for TlvGen {
             let mut corrupt_hash = self.gen_corrupted;
             for k in &[TlvKinds::RSA2048, TlvKinds::RSA3072,
                 TlvKinds::ECDSA224, TlvKinds::ECDSA256,
-                TlvKinds::ED25519]
+                TlvKinds::ED25519, TlvKinds::ECDSASIG]
             {
                 if self.kinds.contains(k) {
                     corrupt_hash = false;
@@ -525,6 +537,28 @@ impl ManifestGen for TlvGen {
             } else {
                 result.write_u16::<LittleEndian>(TlvKinds::RSA3072 as u16).unwrap();
             }
+            result.write_u16::<LittleEndian>(signature.len() as u16).unwrap();
+            result.extend_from_slice(&signature);
+        }
+
+        if self.kinds.contains(&TlvKinds::ECDSASIG) {
+            let rng = rand::SystemRandom::new();
+            let keyhash = digest::digest(&digest::SHA256, ECDSA256_PUB_KEY);
+            let key_bytes = pem::parse(include_bytes!("../../root-ec-p256-pkcs8.pem").as_ref()).unwrap();
+            let sign_algo = &ECDSA_P256_SHA256_ASN1_SIGNING;
+            let key_pair = EcdsaKeyPair::from_pkcs8(sign_algo, &key_bytes.contents).unwrap();
+            let signature = key_pair.sign(&rng,&sig_payload).unwrap();
+
+            // Write public key
+            let keyhash_slice = keyhash.as_ref();
+            assert!(keyhash_slice.len() == 32);
+            result.write_u16::<LittleEndian>(TlvKinds::KEYHASH as u16).unwrap();
+            result.write_u16::<LittleEndian>(32).unwrap();
+            result.extend_from_slice(keyhash_slice);
+
+            // Write signature
+            result.write_u16::<LittleEndian>(TlvKinds::ECDSASIG as u16).unwrap();
+            let signature = signature.as_ref().to_vec();
             result.write_u16::<LittleEndian>(signature.len() as u16).unwrap();
             result.extend_from_slice(&signature);
         }

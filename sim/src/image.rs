@@ -1,6 +1,6 @@
 // Copyright (c) 2019-2021 Linaro LTD
 // Copyright (c) 2019-2020 JUUL Labs
-// Copyright (c) 2019-2021 Arm Limited
+// Copyright (c) 2019-2023 Arm Limited
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -1892,7 +1892,10 @@ fn make_tlv() -> TlvGen {
             TlvGen::new_rsa3072_pss()
         } else if Caps::EcdsaP256.present() {
             TlvGen::new_ecdsa()
-        } else if Caps::Ed25519.present() {
+        } else if Caps::EcdsaSig.present() {
+            TlvGen::new_generic_ecdsa()
+        }
+         else if Caps::Ed25519.present() {
             TlvGen::new_ed25519()
         } else {
             TlvGen::new_hash_only()
