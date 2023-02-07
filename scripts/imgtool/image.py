@@ -305,7 +305,7 @@ class Image():
         return cipherkey, ciphermac, pubk
 
     def create(self, key, public_key_format, enckey, dependencies=None,
-               sw_type=None, custom_tlvs=None, encrypt_keylen=128, clear=False, fixed_sig=None, pub_key=None, vector_to_sign=None):
+               sw_type=None, custom_tlvs=None, encrypt_keylen=128, clear=False, fixed_sig=None, pub_key=None, vector_to_sign=None, use_legacy_tlv=False):
         self.enckey = enckey
 
         # Calculate the hash of the public key
@@ -460,10 +460,17 @@ class Image():
                 else:
                     print(os.path.basename(__file__) + ": sign the digest")
                     sig = key.sign_digest(digest)
-                tlv.add(key.sig_tlv(), sig)
+                # only ecdsa256 has legacy tlv type
+                if use_legacy_tlv and isinstance(key, ecdsa.ECDSA256P1):
+                    tlv.add(key.legacy_sig_tlv(),sig)
+                else:
+                    tlv.add(key.sig_tlv(), sig)
                 self.signature = sig
             elif fixed_sig is not None and key is None:
-                tlv.add(pub_key.sig_tlv(), fixed_sig['value'])
+                if use_legacy_tlv and isinstance(pub_key, ecdsa.ECDSA256P1Public):
+                    tlv.add(pub_key.legacy_sig_tlv(), fixed_sig['value'])
+                else:
+                    tlv.add(pub_key.sig_tlv(), fixed_sig['value'])
                 self.signature = fixed_sig['value']
             else:
                 raise click.UsageError("Can not sign using key and provide fixed-signature at the same time")
