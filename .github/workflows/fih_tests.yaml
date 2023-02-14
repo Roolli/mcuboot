@@ -58,3 +58,4 @@ jobs:
       run: |
         echo "::error failed on purpose!"
         exit 1
+
