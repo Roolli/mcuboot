@@ -66,10 +66,10 @@ def print_results(results):
         print("        last line: {:s} ({:d})".format(last_line, failed_boot_last_lines[last_line]))
     print("    {:s} ({:d})".format(CATEGORIES['BOOT'], test_stats[CATEGORIES['BOOT']]))
     env_file = os.getenv('GITHUB_ENV')
+    print(f"file:{env_file}")
     print("{:s} ({:d}):".format(CATEGORIES['FAILED'], test_stats[CATEGORIES['TOTAL']] - test_stats[CATEGORIES['SUCCESS']]))
     with open(env_file,'a') as myfile:
         myfile.write(f"FAILED_COUNT={test_stats[CATEGORIES['TOTAL']] - test_stats[CATEGORIES['SUCCESS']]}")
-    print(os.environ["GITHUB_ENV.FAILED_COUNT"])
     for reason in exec_fail_reasons.keys():
         print("    {:s} ({:d})".format(reason, exec_fail_reasons[reason]))
 
