@@ -68,7 +68,7 @@ def print_results(results):
     env_file = os.getenv('GITHUB_ENV')
     print("{:s} ({:d}):".format(CATEGORIES['FAILED'], test_stats[CATEGORIES['TOTAL']] - test_stats[CATEGORIES['SUCCESS']]))
     with open(env_file,'a') as myfile:
-        myfile.write("FAILED_COUNT={:s}".format(str(test_stats[CATEGORIES['TOTAL']] - test_stats[CATEGORIES['SUCCESS']])))
+        myfile.write("FAILED_COUNT={:s}".format(test_stats[CATEGORIES['TOTAL']] - test_stats[CATEGORIES['SUCCESS']]))
     print(os.environ["GITHUB_ENV.FAILED_COUNT"])
     for reason in exec_fail_reasons.keys():
         print("    {:s} ({:d})".format(reason, exec_fail_reasons[reason]))
