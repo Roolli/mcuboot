@@ -18,8 +18,10 @@ jobs:
         # FIH environment must use the following space separated format:
         #   BUILD_TYPE SKIP_SIZE DAMAGE_TYPE FIH_LEVEL(optional)
         - "RELEASE 2,4,6,8,10 SIGNATURE"
-        - "RELEASE 2,4,6,8,10 SIGNATURE LOW"
-        - "RELEASE 2,4,6,8,10 SIGNATURE MEDIUM"
+        - "RELEASE 2,4,6 SIGNATURE LOW"
+        - "RELEASE 2,4,6 SIGNATURE MEDIUM"
+        - "RELEASE 8,10 SIGNATURE LOW"
+        - "RELEASE 8,10 SIGNATURE MEDIUM"
         - "MINSIZEREL 2,4,6 SIGNATURE"
         - "MINSIZEREL 2,4,6 SIGNATURE LOW"
         - "MINSIZEREL 2,4,6 SIGNATURE MEDIUM"
@@ -51,3 +53,8 @@ jobs:
         FIH_ENV: ${{ matrix.fih_env }}
       run: |
         ./ci/fih-tests_run.sh
+    - name: Check for output
+      if: 0 != 1
+      run: |
+        echo "::error failed on purpose!"
+        exit 1
