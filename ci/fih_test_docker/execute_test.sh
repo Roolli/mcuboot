@@ -61,6 +61,7 @@ echo "    - BUILD_TYPE: $BUILD_TYPE"
 echo "    - FIH_LEVEL: $FIH_LEVEL"
 echo "    - SKIP_SIZE: $SKIP_SIZE"
 echo "    - DAMAGE_TYPE: $DAMAGE_TYPE"
-echo "DAMAGE_TYPE=$DAMAGE_TYPE" >> $GITHUB_ENV
+cat $GITHUB_ENV
+echo "SKIP_SIZE=$SKIP_SIZE" >> $GITHUB_ENV
 
 python3 $MCUBOOT_PATH/ci/fih_test_docker/generate_test_report.py fih_test_output.yaml
