@@ -53,9 +53,10 @@ jobs:
         FIH_ENV: ${{ matrix.fih_env }}
       run: |
         ./ci/fih-tests_run.sh
+        echo "test output: " $FAILED_COUNT
     - name: Check for output
-      if: 0 != 1
+      if: ${{ DAMAGE_TYPE }} != "8,10" && ${{ FAILED_COUNT }} != 0
       run: |
-        echo "::error failed on purpose!"
+        echo "::error Tests failed to execute successfully"
         exit 1
 
