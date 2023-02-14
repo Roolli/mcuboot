@@ -55,7 +55,7 @@ jobs:
         ./ci/fih-tests_run.sh
         echo "test output: " $FAILED_COUNT
     - name: Check for output
-      if: ${{ DAMAGE_TYPE }} != "8,10" && ${{ FAILED_COUNT }} != 0
+      if: ${{ env.DAMAGE_TYPE }} != "8,10" && ${{ env.FAILED_COUNT }} != 0
       run: |
         echo "::error Tests failed to execute successfully"
         exit 1
