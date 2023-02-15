@@ -18,9 +18,10 @@ jobs:
         fih_env:
         # FIH environment must use the following space separated format:
         #   BUILD_TYPE SKIP_SIZE DAMAGE_TYPE FIH_LEVEL(optional)
-        - "RELEASE 2,4,6,8,10 SIGNATURE"
+        - "RELEASE 2,4,6 SIGNATURE"
         - "RELEASE 2,4,6 SIGNATURE LOW"
         - "RELEASE 2,4,6 SIGNATURE MEDIUM"
+        - "RELEASE 8,10 SIGNATURE"
         - "RELEASE 8,10 SIGNATURE LOW"
         - "RELEASE 8,10 SIGNATURE MEDIUM"
         - "MINSIZEREL 2,4,6 SIGNATURE"
@@ -54,7 +55,4 @@ jobs:
         FIH_ENV: ${{ matrix.fih_env }}
       run: |
         ./ci/fih-tests_run.sh
-    - name: Output env vars
-      run: |
-        echo "CI has passed (and python return err 1 did not work)"
 

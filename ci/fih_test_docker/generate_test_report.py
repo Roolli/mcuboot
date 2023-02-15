@@ -65,12 +65,13 @@ def print_results(results):
     for last_line in failed_boot_last_lines.keys():
         print("        last line: {:s} ({:d})".format(last_line, failed_boot_last_lines[last_line]))
     print("    {:s} ({:d})".format(CATEGORIES['BOOT'], test_stats[CATEGORIES['BOOT']]))
-    print("{:s} ({:d}):".format(CATEGORIES['FAILED'], test_stats[CATEGORIES['TOTAL']] - test_stats[CATEGORIES['SUCCESS']]))
+    print("{:s} :({:d})".format(CATEGORIES['FAILED'], test_stats[CATEGORIES['TOTAL']] - test_stats[CATEGORIES['SUCCESS']]))
     for reason in exec_fail_reasons.keys():
         print("    {:s} ({:d})".format(reason, exec_fail_reasons[reason]))
     skip_size = os.environ["SKIP_SIZE"]
     # if there are any passing tests that should not be happening, fail the job
-    if(0 < 1 and skip_size != "8,10"):
+    if(test_stats[CATEGORIES['BOOT']] > 0 and skip_size == "2,4,6"):
+        print(f"There were passing cases that should not have happened with skip size: {skip_size}")
         exit(1)
 
 
