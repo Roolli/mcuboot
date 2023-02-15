@@ -55,6 +55,8 @@ BOOTLOADER_AXF='./install/outputs/bl2.axf'
 
 $MCUBOOT_PATH/ci/fih_test_docker/run_fi_test.sh $BOOTLOADER_AXF $SKIP_SIZE $DAMAGE_TYPE> fih_test_output.yaml
 
+export SKIP_SIZE=$SKIP_SIZE
+
 echo ""
 echo "test finished with"
 echo "    - BUILD_TYPE: $BUILD_TYPE"
