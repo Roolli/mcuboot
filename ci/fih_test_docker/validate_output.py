@@ -16,7 +16,7 @@ import argparse
 from utils import CATEGORIES, parse_yaml_file
 
 def validate_output(test_stats,skip_size,fih_level):
-    if(test_stats[CATEGORIES['BOOT']] > 0 and skip_size == "2,4,6" and fih_level != ""):
+    if(test_stats[CATEGORIES['BOOT']] > 0 and skip_size == "2,4,6" and fih_level != None):
         raise ValueError("The number of sucessful boots was more than zero")
 
 def main():
