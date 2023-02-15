@@ -68,13 +68,10 @@ def print_results(results):
     print("{:s} ({:d}):".format(CATEGORIES['FAILED'], test_stats[CATEGORIES['TOTAL']] - test_stats[CATEGORIES['SUCCESS']]))
     for reason in exec_fail_reasons.keys():
         print("    {:s} ({:d})".format(reason, exec_fail_reasons[reason]))
-    # if(test_stats[CATEGORIES['TOTAL']] - test_stats[CATEGORIES['SUCCESS']] > 0 ): # and skip size is not 8,10
-    print("Exiting... with error")
-    for item, value in os.environ.items():
-        print('{}: {}'.format(item, value))
     skip_size = os.environ["SKIP_SIZE"]
-    print(f"{skip_size}")
-    exit(1)
+    # if there are any passing tests that should not be happening, fail the job
+    if(test_stats[CATEGORIES['TOTAL']] - test_stats[CATEGORIES['SUCCESS']] > 0 and skip_size != "8,10"):
+        exit(1)
 
 
 
