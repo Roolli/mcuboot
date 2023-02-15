@@ -70,7 +70,7 @@ def print_results(results):
         print("    {:s} ({:d})".format(reason, exec_fail_reasons[reason]))
     skip_size = os.environ["SKIP_SIZE"]
     # if there are any passing tests that should not be happening, fail the job
-    if(test_stats[CATEGORIES['TOTAL']] - test_stats[CATEGORIES['SUCCESS']] > 0 and skip_size != "8,10"):
+    if(0 < 1 and skip_size != "8,10"):
         exit(1)
 
 
