@@ -68,10 +68,14 @@ def print_results(results):
     env_file = os.getenv('GITHUB_ENV')
     print(f"file:{env_file}")
     print("{:s} ({:d}):".format(CATEGORIES['FAILED'], test_stats[CATEGORIES['TOTAL']] - test_stats[CATEGORIES['SUCCESS']]))
-    with open(env_file,'a') as myfile:
-        myfile.write(f"FAILED_COUNT={test_stats[CATEGORIES['TOTAL']] - test_stats[CATEGORIES['SUCCESS']]}")
     for reason in exec_fail_reasons.keys():
         print("    {:s} ({:d})".format(reason, exec_fail_reasons[reason]))
+    # if(test_stats[CATEGORIES['TOTAL']] - test_stats[CATEGORIES['SUCCESS']] > 0 ): # and skip size is not 8,10
+    print("Exiting... with error")
+    skip_size = os.getenv["SKIP_SIZE"]
+    print(f"{skip_size}")
+    exit(1)
+
 
 
 def main():
