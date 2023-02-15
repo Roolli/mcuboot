@@ -26,6 +26,9 @@ BUILD_TYPE=$2
 DAMAGE_TYPE=$3
 FIH_LEVEL=$4
 
+export SKIP_SIZE=$SKIP_SIZE
+export FIH_LEVEL=$FIH_LEVEL
+
 if test -z "$FIH_LEVEL"; then
     # Use the default level
     CMAKE_FIH_LEVEL=""
@@ -55,7 +58,6 @@ BOOTLOADER_AXF='./install/outputs/bl2.axf'
 
 $MCUBOOT_PATH/ci/fih_test_docker/run_fi_test.sh $BOOTLOADER_AXF $SKIP_SIZE $DAMAGE_TYPE> fih_test_output.yaml
 
-export SKIP_SIZE=$SKIP_SIZE
 
 echo ""
 echo "test finished with"
