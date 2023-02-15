@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - test-ci
+      - main
   pull_request:
 
 name: FIH hardening
