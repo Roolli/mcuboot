@@ -26,9 +26,6 @@ BUILD_TYPE=$2
 DAMAGE_TYPE=$3
 FIH_LEVEL=$4
 
-export SKIP_SIZE=$SKIP_SIZE
-export FIH_LEVEL=$FIH_LEVEL
-
 if test -z "$FIH_LEVEL"; then
     # Use the default level
     CMAKE_FIH_LEVEL=""
@@ -67,4 +64,4 @@ echo "    - SKIP_SIZE: $SKIP_SIZE"
 echo "    - DAMAGE_TYPE: $DAMAGE_TYPE"
 
 python3 $MCUBOOT_PATH/ci/fih_test_docker/generate_test_report.py fih_test_output.yaml
-python3 $MCUBOOT_PATH/ci/fih_test_docker/validate_output.py fih_test_output.yaml
+python3 $MCUBOOT_PATH/ci/fih_test_docker/validate_output.py fih_test_output.yaml $SKIP_SIZE $FIH_LEVEL
