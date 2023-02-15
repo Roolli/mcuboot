@@ -14,6 +14,7 @@ jobs:
   config:
     strategy:
       matrix:
+        fail-fast: false
         fih_env:
         # FIH environment must use the following space separated format:
         #   BUILD_TYPE SKIP_SIZE DAMAGE_TYPE FIH_LEVEL(optional)
