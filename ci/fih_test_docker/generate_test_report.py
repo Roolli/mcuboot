@@ -72,6 +72,7 @@ def print_results(results):
     # If there are any successful boots (undesired behaviours), fail the job
     skip_size = os.getenv("SKIP_SIZE")
     fih_level = os.getenv("FIH_LEVEL")
+    print(f"{fih_level}")
     if(test_stats[CATEGORIES['BOOT']] > 0 and skip_size == "2,4,6" and fih_level != None):
         exit(1)
 
