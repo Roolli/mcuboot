@@ -23,7 +23,7 @@ def main():
     parser = argparse.ArgumentParser(description='''Process a FIH test output yaml file, and validate no sucessfull boots have happened''')
     parser.add_argument('filename', help='yaml file to process')
     parser.add_argument('skip_size',help='instruction skip size')
-    parser.add_argument('fih_level',help='fault injection hardening level')
+    parser.add_argument('fih_level',nargs="?",help='fault injection hardening level')
 
     args = parser.parse_args()
     (test_stats,_,_) = parse_yaml_file(args.filename)
