@@ -65,14 +65,12 @@ def print_results(results):
     for last_line in failed_boot_last_lines.keys():
         print("        last line: {:s} ({:d})".format(last_line, failed_boot_last_lines[last_line]))
     print("    {:s} ({:d})".format(CATEGORIES['BOOT'], test_stats[CATEGORIES['BOOT']]))
-    env_file = os.getenv('GITHUB_ENV')
-    print(f"file:{env_file}")
     print("{:s} ({:d}):".format(CATEGORIES['FAILED'], test_stats[CATEGORIES['TOTAL']] - test_stats[CATEGORIES['SUCCESS']]))
     for reason in exec_fail_reasons.keys():
         print("    {:s} ({:d})".format(reason, exec_fail_reasons[reason]))
     # if(test_stats[CATEGORIES['TOTAL']] - test_stats[CATEGORIES['SUCCESS']] > 0 ): # and skip size is not 8,10
     print("Exiting... with error")
-    skip_size = os.getenv["SKIP_SIZE"]
+    skip_size = os.environ["SKIP_SIZE"]
     print(f"{skip_size}")
     exit(1)
 
